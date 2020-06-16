@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+@class YHBarChart;
 
 @interface ResultDisplay : UIViewController
+
+
+@property (nonatomic, strong) YHBarChart * barchartView;
 
 @end

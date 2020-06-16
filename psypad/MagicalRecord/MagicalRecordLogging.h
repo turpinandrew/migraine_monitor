@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Magical Panda Software LLC. All rights reserved.
 //
 
-#import <MagicalRecord/MagicalRecord+Options.h>
+#import "MagicalRecord+Options.h"
 
 #if MR_LOGGING_DISABLED
 
@@ -33,11 +33,11 @@
     #define LOG_MAYBE(async, lvl, flg, ctx, tag, fnct, frmt, ...) \
         do                                                        \
         {                                                         \
-            if ((lvl & flg) == flg)                               \
-            {                                                     \
-                NSLog(frmt, ##__VA_ARGS__);                       \
+            if ((lvl & flg) == flg){                              \
+                                                                  \
             }                                                     \
-        } while (0)
+        }while(0)
+//            {NSLog(frmt, ##__VA_ARGS__);}} while (0)
 #endif
 
 #define MRLogError(frmt, ...) LOG_MAYBE(NO, MR_LOG_LEVEL_DEF, CAST MagicalRecordLoggingMaskError, MR_LOGGING_CONTEXT, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)

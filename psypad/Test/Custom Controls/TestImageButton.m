@@ -19,7 +19,8 @@
     {
         self.adjustsImageWhenHighlighted = NO;
         self.exclusiveTouch = YES;
-
+        //self.width = [[UIScreen mainScreen] bounds].size.width;
+        //self.height = [[UIScreen mainScreen] bounds].size.height;
         self.width = 1024.0;
         self.height = 768.0;
         [self moveToX:0.0 y:0.0];
@@ -36,7 +37,9 @@
         self.isAnimated = NO;
 
         [self setBackgroundImage:image forState:UIControlStateNormal];
-        [self setWidth:image.size.width height:image.size.height];
+        //[self setWidth:[[UIScreen mainScreen] bounds].size.width height:[[UIScreen mainScreen] bounds].size.height];
+        [self setFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+        //[self setWidth:image.size.width height:image.size.height];
     }
     return self;
 }
@@ -56,8 +59,9 @@
         NSMutableArray *animImages = [images mutableCopy];
 
         UIImage *firstImage = [animImages objectAtIndex:0];
-        [self setWidth:firstImage.size.width height:firstImage.size.height];
-
+        //[self setWidth:firstImage.size.width height:firstImage.size.height];
+        //[self setWidth:[[UIScreen mainScreen] bounds].size.width height:[[UIScreen mainScreen] bounds].size.height];
+        [self setFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
         if (!loop)
         {
             UIImage *blankImage = [self imageWithColor:[firstImage colorAtPosition:CGPointMake(0,0)]];
@@ -70,9 +74,12 @@
         {
             self.animationImageView = [[UIImageView alloc] initWithImage:firstImage];
         }
-
-        [self.animationImageView setWidth:firstImage.size.width height:firstImage.size.height];
+        
+        //Original: [self.animationImageView setWidth:firstImage.size.width height:firstImage.size.height];
+        //Changed on 21th July
+        [self.animationImageView setWidth:[[UIScreen mainScreen] bounds].size.width height:[[UIScreen mainScreen] bounds].size.height];
         [self.animationImageView moveToX:0 y:0];
+        [self.animationImageView setContentMode:UIViewContentModeScaleToFill];
         [self addSubview:self.animationImageView];
 
         float ms_per_frame = framerate / 60.0;

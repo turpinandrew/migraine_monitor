@@ -6,8 +6,8 @@
 //
 
 #import "TestViewController.h"
-#import <AFNetworking/AFNetworking.h>
-#import <MBProgressHUD/MBProgressHUD.h>
+#import "AFNetworking.h"
+#import "MBProgressHUD.h"
 #import <AVFoundation/AVFoundation.h>
 
 #import "AppDelegate.h"
@@ -33,7 +33,8 @@
 #import "DatabaseManager.h"
 
 #import "NSObject+DelayBlock.h"
-#import "DemoViewController.h"
+#import "StartPage.h"
+#import "Congratulations.h"
 
 // Shortcuts for the view size
 #define VIEW_HEIGHT self.view.bounds.size.height
@@ -70,9 +71,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    _currentScreenBrigtness = [[UIScreen mainScreen] brightness];
+    [[UIScreen mainScreen] setBrightness:1.0];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-
+    
     self.questionLabel.hidden = YES;
     self.configurationNameLabel.hidden = YES;
     self.beginConfigurationButton.hidden = YES;
@@ -98,12 +100,16 @@
         self.exitButton.hidden = YES;
     }
 
-    self.distanceDetector = [[DistanceDetector alloc] init];
+    //self.distanceDetector = [[DistanceDetector alloc] init];
 
     [[UIScreen mainScreen] setBrightness:1.0];
     
     self.currentConfiguration = [self nextConfiguration];
     [self presentConfiguration];
+    
+    self.backgroundImageView.frame = self.view.frame;
+    self.overlayImageView.frame = self.view.frame;
+    
 }
 
 #pragma mark - UIViewController delegate methods
@@ -114,7 +120,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+-(void)viewDidDisappear:(BOOL)animated{
+    [[UIScreen mainScreen] setBrightness:_currentScreenBrigtness];
+}
+
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     return UIDeviceOrientationIsLandscape(toInterfaceOrientation);
 }
@@ -148,12 +158,12 @@
 
 - (void)presentConfiguration
 {
+    //NSLog(@"%@",self.currentConfiguration);
     self.configurationNameLabel.text = self.currentConfiguration.title;
 
     self.view.backgroundColor = [UIColor colorWithHexString:self.currentConfiguration.background_colour];
-        UIImage *titleImage = self.currentConfiguration.sequence.titleImage;
+    UIImage *titleImage = self.currentConfiguration.sequence.titleImage;
     self.backgroundImageView.image = titleImage;
-
     if (self.currentConfiguration.show_exit_buttonValue)
     {
         self.exitButton.hidden = NO;
@@ -237,7 +247,16 @@
     self.beginConfigurationButton.hidden = YES;
     self.view.backgroundColor = [UIColor colorWithHexString:self.currentConfiguration.background_colour];
     UIImage *bgImage = self.currentConfiguration.sequence.backgroundImage;
+    //self.backgroundImageView.image = bgImage;
+    
+    //Update on 29th Aug
+    //Background Image Manually adjust to full screen.
+    
+    self.backgroundImageView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     self.backgroundImageView.image = bgImage;
+    self.backgroundImageView.contentMode = UIViewContentModeScaleToFill;
+    //NSLog(@"BackGround Image Actual: X: %f, Y: %f, W: %f, H:%f", _backgroundImageView.frame.origin.x, _backgroundImageView.frame.origin.y, bgImage.size.width, bgImage.size.height);
+    //NSLog(@"BackGround Image Should Be: X: %f, Y: %f, W: %f, H:%f", _backgroundImageView.frame.origin.x, _backgroundImageView.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
     
     self.ignoredCount = 0;
 
@@ -342,46 +361,51 @@
     {
         [button removeFromSuperview];
     }
-
+    //NSLog(@"Run Out of Here");
     if ((self.currentConfiguration = [self nextConfiguration]))
     {
+        //NSLog(@"Run Here");
         [self log:@"pressed_exit_button" info:nil];
         
         [self presentConfiguration];
     }
     else
     {
+        //NSLog(@"Run Inside Here");
         [self log:@"exit_test" info:nil];
 
-        [self uploadData];
+        //[self uploadData];
 
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-        
-        TestLog *log = self.log;
-        UIViewController *parentVC = [(UINavigationController *)self.presentingViewController topViewController];
         [self dismissViewControllerAnimated:YES completion:^
         {
-            if ([parentVC isKindOfClass:[DemoViewController class]])
-            {
-                [parentVC performSegueWithIdentifier:@"ShowLog" sender:log];
-            }
         }];
     }
 }
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if ([segue.identifier isEqualToString:@"Finish"]) {
+        Congratulations *controller = segue.destinationViewController;
+        controller.log = sender;
+    }
+}
+
+
+
 
 - (void)uploadData
 {
     [[ServerManager sharedManager] uploadLogsWithProgress:^(NSString *status, float _progress)
     {
-        NSLog(@"Uploading logs, progress: %.2f", _progress);
+        //NSLog(@"Uploading logs, progress: %.2f", _progress);
 
     } success:^
     {
-        NSLog(@"Upload Success");
+        //NSLog(@"Upload Success");
 
     } failure:^(NSString *error)
     {
-        NSLog(@"Upload Failure: %@", error);
+        //NSLog(@"Upload Failure: %@", error);
     }];
 }
 
@@ -400,7 +424,7 @@
     [self log:@"button_press" info:@"%d (%@)", pressedButton.number, [pressedButton titleForState:UIControlStateNormal]];
 
     if (self.currentConfiguration.attempt_facial_recognitionValue)
-        [self.distanceDetector takePhoto:self question:self.questionNumber];
+        //[self.distanceDetector takePhoto:self question:self.questionNumber];
     
     if (self.currentConfiguration.enable_secondary_stimuliValue && self.overlayIndex != self.secondaryPressedIndex)
     {
@@ -641,29 +665,52 @@
     NSMutableArray *buttons = [NSMutableArray array];
     for (int i = 0; i < self.currentConfiguration.num_buttonsValue; i++)
     {
-        NSString *buttonText; UIColor *bg_colour, *fg_colour; int width = 0, height = 0, x = 0, y = 0; UIImage *img;
+        NSString *buttonText; UIColor *bg_colour, *fg_colour;
+        float width = 0.0, height = 0.0, x = 0.0, y = 0.0;
+        UIImage *img;
+        //Update on 29th Aug
+        //scale widdth and height
+        float scale = self.view.frame.size.width / self.currentConfiguration.sequence.backgroundImage.size.width;
         if (i == 0)
         {
             buttonText = self.currentConfiguration.button1_text;
             bg_colour = [UIColor colorWithHexString:self.currentConfiguration.button1_bg];
             fg_colour = [UIColor colorWithHexString:self.currentConfiguration.button1_fg];
-            x = self.currentConfiguration.button1_x.intValue;
-            y = self.currentConfiguration.button1_y.intValue;
-            width = self.currentConfiguration.button1_w.intValue;
-            height = self.currentConfiguration.button1_h.intValue;
+            //x = self.currentConfiguration.button1_x.intValue;
+            //y = self.currentConfiguration.button1_y.intValue;
+            
+            //Update on 29th Aug
+            //scale widdth and height
+            width = self.currentConfiguration.button1_w.intValue * scale;
+            height = self.currentConfiguration.button1_h.intValue * scale;
             img = self.currentConfiguration.sequence.button1Image;
+            
+            //Reset Button X,Y, Change made on 21th July
+            //Configure receives x=0, y=668
+            x = 0.0;
+            y = self.view.frame.size.height - height;
         }
         else if (i == 1)
         {
             buttonText = self.currentConfiguration.button2_text;
             bg_colour = [UIColor colorWithHexString:self.currentConfiguration.button2_bg];
             fg_colour = [UIColor colorWithHexString:self.currentConfiguration.button2_fg];
-            x = self.currentConfiguration.button2_x.intValue;
-            y = self.currentConfiguration.button2_y.intValue;
-            width = self.currentConfiguration.button2_w.intValue;
-            height = self.currentConfiguration.button2_h.intValue;
+
+            //x = self.currentConfiguration.button2_x.intValue;
+            //y = self.currentConfiguration.button2_y.intValue;
+            
+            //Update on 29th Aug
+            //scale widdth and height
+            width = self.currentConfiguration.button2_w.intValue * scale;
+            height = self.currentConfiguration.button2_h.intValue * scale;
             img = self.currentConfiguration.sequence.button2Image;
+            
+            //Reset Button X,Y, Change made on 21th July
+            //Configure receives x=924, y=668
+            x = self.view.frame.size.width - width;
+            y = self.view.frame.size.height - height;
         }
+        /*
         else if (i == 2)
         {
             buttonText = self.currentConfiguration.button3_text;
@@ -686,7 +733,9 @@
             height = self.currentConfiguration.button4_h.intValue;
             img = self.currentConfiguration.sequence.button4Image;
         }
-
+         */
+        NSLog(@"ButtonIndex: %d\nX: %f\nY: %f\nWidth: %f\nHeight: %f\n",i,x,y,width,height);
+        
         TestButton *button = [[TestButton alloc] initWithNumber:i+1
                                                            text:buttonText
                                                              bg:bg_colour
@@ -1169,9 +1218,39 @@
 
 - (void)testFinished
 {
-    [self log:@"test_finished" info:nil];
-
-    [self pressExitButton:nil];
+    //if (self.realTest) {
+        [self log:@"test_finished" info:nil];
+        
+        [UIView cancelPreviousPerformRequestsWithTarget:self];
+        
+        self.questionLabel.hidden = YES;
+        
+        [self.image removeFromSuperview];
+        
+        for (TestButton *button in self.buttons)
+        {
+            [button removeFromSuperview];
+        }
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+        
+        TestLog *log = self.log;
+        UIViewController *parentVC = [(UINavigationController *)self.presentingViewController topViewController];
+        [self dismissViewControllerAnimated:YES completion:^
+         {
+             if ([parentVC isKindOfClass:[StartPage class]])
+             {
+                 [parentVC performSegueWithIdentifier:@"Finish&Congratulation" sender:log];
+             }
+             
+             //[self performSegueWithIdentifier:@"Finish" sender:log];
+             //NSLog(@"%@",log);
+             
+         }];
+    //}
+    //else{
+    //    [self pressExitButton:nil];
+    //}
 }
 
 #pragma mark - Logging functions
@@ -1185,12 +1264,12 @@
         va_list argList;
         va_start(argList, format);
         info = [[NSString alloc] initWithFormat:format arguments:argList];
-        NSLog(@"%@, %@", type, info);
+        //NSLog(@"%@, %@", type, info);
         va_end(argList);
     }
     else
     {
-        NSLog(@"%@", type);
+        //NSLog(@"%@", type);
     }
 
     if (self.log)
@@ -1211,14 +1290,14 @@
 {
     free(self.seedState);
 
-    [self.distanceDetector done];
+    //[self.distanceDetector done];
 
     [super viewDidUnload];
 }
-
+/*
 - (void)distanceDetectionPerformed:(NSString *)string
 {
     [self log:@"distance_detection" info:string];
 }
-
+*/
 @end

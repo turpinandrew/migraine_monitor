@@ -11,23 +11,42 @@
 
 @implementation DLDatabaseManager
 
-+ (NSString *)modelFileName        { NSLog(@"WARNING: please override"); return nil; }
-+ (NSString *)storeFileName        { NSLog(@"WARNING: please override"); return nil; }
-+ (NSArray *)modelNames            { NSLog(@"WARNING: please override"); return nil; }
-+ (NSString *)iCloudContainer      { NSLog(@"WARNING: please override"); return nil; }
-+ (NSString *)iCloudContentNameKey { NSLog(@"WARNING: please override"); return nil; }
++ (NSString *)modelFileName        { //NSLog(@"WARNING: please override");
+    return nil;
+    
+}
++ (NSString *)storeFileName        { //NSLog(@"WARNING: please override");
+    return nil;
+    
+}
++ (NSArray *)modelNames            { //NSLog(@"WARNING: please override");
+    return nil;
+    
+}
++ (NSString *)iCloudContainer      { //NSLog(@"WARNING: please override");
+    return nil;
+    
+}
++ (NSString *)iCloudContentNameKey { //NSLog(@"WARNING: please override");
+    return nil;
+    
+}
 
 + (void)setup
 {
     assert(self.modelFileName
            && self.storeFileName
            && self.modelNames);
-    
+    //NSLog(@"HahAha0");
     NSManagedObjectModel *model = [NSManagedObjectModel MR_managedObjectModelNamed:self.modelFileName];
-    [NSManagedObjectModel MR_setDefaultManagedObjectModel:model];
+    //NSLog(@"HahAha1");
     
+    [NSManagedObjectModel MR_setDefaultManagedObjectModel:model];
+    //NSLog(@"HahAha2");
     NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:self.storeFileName];
 
+    //NSLog(@"HahAha3");
+    
     NSError *error;
     if (![DLIterativeMigrator iterativeMigrateURL:storeURL
                                            ofType:NSSQLiteStoreType
@@ -35,17 +54,17 @@
                                 orderedModelNames:self.modelNames
                                             error:&error])
     {
-        NSLog(@"Error migrating to latest model: %@\n %@", error, [error userInfo]);
+        //NSLog(@"Error migrating to latest model: %@\n %@", error, [error userInfo]);
     }
 
     if (self.iCloudContainer && self.iCloudContentNameKey)
     {
-        NSLog(@"Using iCloud Core Data");
+        //NSLog(@"Using iCloud Core Data");
         [MagicalRecord setupCoreDataStackWithiCloudContainer:self.iCloudContainer contentNameKey:self.iCloudContentNameKey localStoreAtURL:storeURL cloudStorePathComponent:nil completion:nil];
     }
     else
     {
-        NSLog(@"Using non-iCloud Core Data");
+        //NSLog(@"Using non-iCloud Core Data");
         [MagicalRecord setupCoreDataStackWithStoreAtURL:storeURL];
     }
 
@@ -59,8 +78,15 @@
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
-+ (BOOL)databaseEmpty { NSLog(@"WARNING: please override"); return NO; }
-+ (void)populateDatabase { NSLog(@"WARNING: please override"); }
++ (BOOL)databaseEmpty {
+    //NSLog(@"WARNING: please override");
+    return NO;
+    
+}
++ (void)populateDatabase {
+    //NSLog(@"WARNING: please override");
+    
+}
 
 + (void)cleanUp
 {

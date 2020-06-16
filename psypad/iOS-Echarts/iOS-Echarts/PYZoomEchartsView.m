@@ -28,8 +28,8 @@
         UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchHandle:)];
         [self addGestureRecognizer:pinchGesture];
         
-        UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panHandle:)];
-        [self addGestureRecognizer:panGesture];
+        //UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panHandle:)];
+        //[self addGestureRecognizer:panGesture];
     }
     return self;
 }

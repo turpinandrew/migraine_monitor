@@ -1,5 +1,5 @@
 //
-//  Congradulations.h
+//  Congratulations.h
 //  psypad
 //
 //  Created by LiuYuHan on 9/7/18.
@@ -10,14 +10,22 @@
 
 @class TestLog;
 
-@interface Congraulations : UIViewController
+@interface Congratulations : UIViewController
 
-@property (strong, nonatomic) IBOutlet UILabel *congradulationLabel;
+@property (strong, nonatomic) IBOutlet UILabel *userIDField;
+@property (strong, nonatomic) IBOutlet UILabel *resultField;
+@property (strong, nonatomic) IBOutlet UILabel *totalTestField;
+@property (strong, nonatomic) IBOutlet UILabel *totalDaysField;
+@property (strong, nonatomic) IBOutlet UILabel *daysInRowField;
 @property (strong, nonatomic) IBOutlet UIButton *doneButton;
-@property (strong, nonatomic) NSString *congradulationString;
+
 @property (strong, nonatomic) TestLog *log;
 
-@property (nonatomic, strong) NSMutableArray *thresholdData;
+@property (strong, nonatomic) NSString *userID;
 
+@property (nonatomic, strong) NSMutableArray *thresholdData;
+@property (nonatomic, strong) NSArray *backImages;
+@property (nonatomic, assign) BOOL realTest;
+@property (nonatomic, assign) BOOL migraine;
 
 @end
