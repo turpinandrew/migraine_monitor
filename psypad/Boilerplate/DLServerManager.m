@@ -7,7 +7,7 @@
 //
 
 #import "DLServerManager.h"
-#import <AFNetworking/AFNetworking.h>
+#import "AFNetworking.h"
 
 @interface DLServerManager ()
 
@@ -15,10 +15,17 @@
 
 @implementation DLServerManager
 
-- (id<DLUserAccount>)currentUser { NSLog(@"WARNING: please override"); return nil; }
+- (id<DLUserAccount>)currentUser { //NSLog(@"WARNING: please override");
+    return nil;
+    
+}
 
-- (void)didLoginWithEmail:(NSString *)email authToken:(NSString *)authToken { NSLog(@"WARNING: please override"); }
-- (void)didLogout { NSLog(@"WARNING: please override"); }
+- (void)didLoginWithEmail:(NSString *)email authToken:(NSString *)authToken { //NSLog(@"WARNING: please override");
+    
+}
+- (void)didLogout { //NSLog(@"WARNING: please override");
+    
+}
 
 + (instancetype)sharedManager
 {
@@ -65,8 +72,11 @@
     return ^(AFHTTPRequestOperation *operation, NSError *error)
     {
         NSDictionary *response = operation.responseObject;
+        //NSLog(@"%@",response);
         if ([response isKindOfClass:[NSDictionary class]])
         {
+            
+            
             if ([response[@"error"] isKindOfClass:[NSString class]])
             {
                 failure(response[@"error"]);
@@ -112,7 +122,7 @@
             }
         }
         
-        failure(__(@"Unknown error"));
+        //failure(__(@"Unknown error"));
     };
     
     [self.requestManager POST:@"api/users/sign_in"
@@ -142,7 +152,7 @@
             }
         }
         
-        failure(__(@"Unknown error"));
+        //failure(__(@"Unknown error"));
     };
     
     NSMutableDictionary *data = info.mutableCopy;

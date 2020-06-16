@@ -3,7 +3,7 @@
 //
 // To change the template use AppCode | Preferences | File Templates.
 //
-
+/*
 #import <CoreMedia/CoreMedia.h>
 #import <AVFoundation/AVFoundation.h>
 #import "DistanceDetector.h"
@@ -119,7 +119,7 @@
         //[self.session removeOutput:stillImageOutput];
     }];
 }
-
+*/
 /*- (NSURL *)createNewFile
 {
     NSURL *documentsDirectory = [[APP_DELEGATE applicationDocumentsDirectory] URLByAppendingPathComponent:@"Images"];
@@ -137,7 +137,7 @@
 
     return newURL;
 }*/
-
+/*
 - (void)done
 {
     [self.session removeOutput:self.stillImageOutput];
@@ -147,7 +147,7 @@
 {
     UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
 
-    #warning accuracy low
+    //#warning accuracy low
     NSDictionary *options = [NSDictionary dictionaryWithObject:CIDetectorAccuracyLow forKey:CIDetectorAccuracy];
     CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:options];
 
@@ -207,3 +207,4 @@
 }
 
 @end
+*/

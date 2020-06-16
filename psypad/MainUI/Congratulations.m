@@ -6,59 +6,134 @@
 //  Copyright © 2018 LiuYuHan. All rights reserved.
 //
 
-#import "Congraulations.h"
+#import "Congratulations.h"
 #import "TestLog.h"
 #import "TestLogItem.h"
+#import "YHSocket.h"
+#import "WHWeatherView.h"
 
-@interface Congraulations ()
+@interface Congratulations ()
 
 @end
 
-@implementation Congraulations
+@implementation Congratulations
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _doneButton.hidden = YES;
-    self.view.backgroundColor =[UIColor colorWithRed:226 green:226 blue:226 alpha:1];
-    _congradulationLabel.text = [[NSString alloc]initWithFormat:@"Congratulations! You have %@ days to go.",_congradulationString];
+    //Background Cloud
+    /*
+    WHWeatherView *weatherView = [[WHWeatherView alloc] init];
+    weatherView.frame = self.view.frame;
+    [self.view addSubview:weatherView];
+    [self.view sendSubviewToBack:weatherView];
+    [weatherView showWeatherAnimationWithType:WHWeatherTypeClound];
+    */
+    
+    //Background Image
+    //_backImages = [[NSArray alloc]initWithObjects:[UIImage imageNamed:@"con_back1.png"],[UIImage imageNamed:@"con_back2.png"],[UIImage imageNamed:@"con_back3.png"],[UIImage imageNamed:@"con_back4.png"],[UIImage imageNamed:@"con_back5.png"], nil];
+    //UIImageView * background = [[UIImageView alloc]initWithFrame:self.view.frame];
+    //int back_index = arc4random() % (int)([_backImages count]);
+    //background.image = [_backImages objectAtIndex:back_index];
+    //background.alpha = 0.1f;
+    //background.layer.opacity = 0.2f;
+    //[self.view addSubview:background];
+    //[self.view sendSubviewToBack:background];
+    //self.view.backgroundColor =[UIColor colorWithRed:203.0/255.0 green:220.0/255.0 blue:235.0/255.0 alpha:1.0];
+    
+    //UserID Text
+    _userID = [[NSUserDefaults standardUserDefaults] objectForKey:@"LoginUser"];
+    _userIDField.text = _userID;
+    
+    //Fireworks
     [self fireworks];
     
+    //Result
     [self calculateThresholds];
-    NSLog(@"%@",self.thresholdData);
-    /*
-     ((22,26,22,28,26,28),(46,30,32,30,32,26))
-     */
-    
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(buttonAction) userInfo:nil repeats:NO];
-    
-    //NSLog(@"%@", self.view.subviews);
-    
-    
-    
-    
+    _resultField.text = [NSString stringWithFormat:@"%d",[self calculateResult]];
+    _resultField.layer.opacity = 0.0f;
+    CABasicAnimation *text_animation1 = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    text_animation1.beginTime = CACurrentMediaTime();
+    text_animation1.duration = 1.0f;
+    text_animation1.fromValue = @(0.0f);
+    text_animation1.toValue = @(1.0f);
+    text_animation1.removedOnCompletion = NO;
+    text_animation1.fillMode = kCAFillModeForwards;
+    [_resultField.layer addAnimation:text_animation1 forKey:@"resultField"];
     
     
+    //Upload Data
+    if ([self uploadData]) {
+        [self storeData];
+    }
+    
+    //Achievement
+    [self setAchievement];
+    
+    _totalTestField.layer.opacity = 0.0f;
+    CABasicAnimation *text_animation2 = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    text_animation2.beginTime = CACurrentMediaTime()+0.8f;
+    text_animation2.duration = 1.0f;
+    text_animation2.fromValue = @(0.0f);
+    text_animation2.toValue = @(1.0f);
+    text_animation2.removedOnCompletion = NO;
+    text_animation2.fillMode = kCAFillModeForwards;
+    [_totalTestField.layer addAnimation:text_animation2 forKey:@"resultField"];
+    
+    _totalDaysField.layer.opacity = 0.0f;
+    CABasicAnimation *text_animation3 = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    text_animation3.beginTime = CACurrentMediaTime()+1.6f;
+    text_animation3.duration = 1.0f;
+    text_animation3.fromValue = @(0.0f);
+    text_animation3.toValue = @(1.0f);
+    text_animation3.removedOnCompletion = NO;
+    text_animation3.fillMode = kCAFillModeForwards;
+    [_totalDaysField.layer addAnimation:text_animation3 forKey:@"resultField"];
+    
+    _daysInRowField.layer.opacity = 0.0f;
+    CABasicAnimation *text_animation4 = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    text_animation4.beginTime = CACurrentMediaTime()+2.4f;
+    text_animation4.duration = 1.0f;
+    text_animation4.fromValue = @(0.0f);
+    text_animation4.toValue = @(1.0f);
+    text_animation4.removedOnCompletion = NO;
+    text_animation4.fillMode = kCAFillModeForwards;
+    [_daysInRowField.layer addAnimation:text_animation4 forKey:@"resultField"];
+    
+    
+    //Done Button
+    //[_doneButton addTarget:self action:@selector(doneAction:) forControlEvents:UIControlEventAllEvents];
+    _doneButton.layer.opacity = 0.0f;
+    CABasicAnimation *button_animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    button_animation.beginTime = CACurrentMediaTime()+3.5f;
+    button_animation.duration = 1.5f;
+    button_animation.fromValue = @(0.0f);
+    button_animation.toValue = @(1.0f);
+    button_animation.removedOnCompletion = NO;
+    button_animation.fillMode = kCAFillModeForwards;
+    [_doneButton.layer addAnimation:button_animation forKey:@"button"];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(setButtonOpacity) userInfo:nil repeats:NO];
+    [_doneButton becomeFirstResponder];
+    
+    //Notifications
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Notification"]) {
+        NSString *tmpSet = [[NSUserDefaults standardUserDefaults] objectForKey:@"Notification"];
+        if ([tmpSet isEqualToString:@"UNSET"]) {
+            [self setNotifications];
+        }
+    }else{
+        [self setNotifications];
+    }
 }
 
-- (void) buttonAction{
-    [_doneButton setHidden:NO];
+-(void)setButtonOpacity{
+    _doneButton.layer.opacity = 1.0f;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (void)fireworks {
     CAEmitterLayer *fireworksEmitter = [CAEmitterLayer layer];
@@ -185,16 +260,204 @@
     }
 }
 
+-(int)calculateThreshold1{
+    long value1, value2, value3, value4;
+    if ([self.thresholdData[0] count] >= 3) {
+        value1 = [self.thresholdData[0][2] integerValue];
+    }else{
+        value1 = 0;
+    }
+    if ([self.thresholdData[0] count] >= 4) {
+        value2 = [self.thresholdData[0][3] integerValue];}
+    else{
+        value2 = 0;
+    }
+    if ([self.thresholdData[0] count] >= 5) {
+        value3 = [self.thresholdData[0][4] integerValue];}
+    else{
+        value3 = 0;
+    }
+    if ([self.thresholdData[0] count] >= 6) {
+        value4 = [self.thresholdData[0][5] integerValue];}
+    else{
+        value4 = 0;
+    }
+    
+    int threshold1 = (int)((float)(value3+value4)/2.0);
+    return threshold1;
+}
+
+-(int)calculateThreshold2{
+    long value5, value6, value7, value8;
+    if ([self.thresholdData[1] count] >= 3) {
+        value5 = [self.thresholdData[1][2] integerValue];}
+    else{
+        value5 = 0;
+    }
+    if ([self.thresholdData[1] count] >= 4) {
+        value6 = [self.thresholdData[1][3] integerValue];}
+    else{
+        value6 = 0;
+    }
+    if ([self.thresholdData[1] count] >= 5) {
+        value7 = [self.thresholdData[1][4] integerValue];}
+    else{
+        value7 = 0;
+    }
+    if ([self.thresholdData[1] count] >= 6) {
+        value8 = [self.thresholdData[1][5] integerValue];}
+    else{
+        value8 = 0;
+    }
+    int threshold2 = (int)((float)(value7+value8)/2.0);
+    return threshold2;
+}
 
 
 
+-(int)calculateResult{
+    
+    int threshold1 = [self calculateThreshold1];
+    int threshold2 = [self calculateThreshold2];
+    
+    int averageThreshold = (int)((float)(threshold1+threshold2)/2.0);
+    return averageThreshold;
+}
+
+-(void)setAchievement{
+    NSString *sendMessage = [[NSString alloc]initWithFormat:@"AnalyseRecord:%@",_userID];
+    YHSocket *communication = [[YHSocket alloc]initWithIP:SHAREDIP andPortNo:SHAREDPORT];
+    NSString *receiveString = [communication receiveStringWithMessage:sendMessage];
+    //NSLog(@"Received: %@", receiveString);
+    NSArray *parts = [receiveString componentsSeparatedByString:@","];
+    if ([parts count] == 3) {
+        _totalTestField.text = parts[0];
+        _totalDaysField.text = parts[1];
+        _daysInRowField.text = parts[2];
+    }else{
+        _totalTestField.text = @"0";
+        _totalDaysField.text = @"0";
+        _daysInRowField.text = @"0";
+    }
+}
 
 
--(IBAction)doneAction:(UIButton *)sender{
+-(BOOL)uploadData{
+    if(_realTest){
+        //Upload log
+        NSString *sendMessage = [[NSString alloc]initWithFormat:@"Record:%@;%d;%d;%@",_userID,[self calculateThreshold1],[self calculateThreshold2],_migraine?@"YES":@"NO"];
+        YHSocket *communication = [[YHSocket alloc]initWithIP:SHAREDIP andPortNo:SHAREDPORT];
+        NSString *receiveString = [communication receiveStringWithMessage:sendMessage];
+        //NSLog(@"Received: %@", receiveString);
+        if (![receiveString isEqualToString:@"Success"]) {
+            //NSLog(@"%@",receiveString);
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@ The data hasn't uploaded to the server successfully, please try again.", receiveString] preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *tryAction = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                if ([self uploadData]) {
+                    [self storeData];
+                }
+            }];
+            UIAlertAction *noactionAction = [UIAlertAction actionWithTitle:@"Dismiss This Result" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            }];
+            [alert addAction:tryAction];
+            [alert addAction:noactionAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            return NO;
+        }else{
+            return YES;
+        }
+    }
+    else{
+        return YES;
+    }
+}
+
+-(BOOL)storeData{
+    if(_realTest){
+        //Local Log
+        NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+        
+        NSDate *currentDate = [NSDate date];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MMM"];
+        NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
+        //NSLog(@"%@",currentDateString);
+        
+        NSString *aKey = [[NSString alloc]initWithFormat:@"%@Data",_userID];
+        NSNumber *thresholdNumber = [NSNumber numberWithInt:[self calculateResult]];
+        
+        //NSLog(@"%@", thresholdNumber);
+        
+        NSMutableDictionary *newRecord = [[NSMutableDictionary alloc]init];
+        [newRecord setValue:thresholdNumber forKey:@"Threshold"];
+        [newRecord setValue:[NSString stringWithFormat:@"%d",[self calculateResult]] forKey:@"Threshold_str"];
+        [newRecord setValue:[NSNumber numberWithBool:_migraine] forKey:@"Migraine"];
+        [newRecord setValue:currentDateString forKey:@"Date_str"];
+        [newRecord setValue:currentDate forKey:@"Date"];
+        //NSArray *data = [[NSArray alloc]initWithObjects:[NSNumber numberWithInt:averageThreshold],[NSNumber numberWithBool:_migraine], nil];
+        //NSLog(@"%@",newRecord);
+        
+        if ([userdefault objectForKey:aKey]) {
+            NSMutableArray *tmpArray = [[NSMutableArray alloc]initWithArray:[userdefault objectForKey:aKey]];
+            NSDictionary *lastRecord = [tmpArray lastObject];
+            if ([currentDateString isEqualToString:[lastRecord objectForKey:@"Date_str"]]) {
+                [tmpArray removeLastObject];
+            }
+            [tmpArray addObject:newRecord];
+            [userdefault setObject:tmpArray forKey:aKey];
+            [userdefault synchronize];
+        }
+        else{
+            NSMutableArray *tmpArray = [[NSMutableArray alloc]initWithObjects:newRecord, nil];
+            [userdefault setObject:tmpArray forKey:aKey];
+            [userdefault synchronize];
+        }
+    }
+    return YES;
+}
+
+
+
+-(void)addNotificationWithDay:(int)day andBody:(NSString *)body{
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:day*86400];
+    notification.soundName = UILocalNotificationDefaultSoundName;
+    notification.alertBody = body;
+    [[UIApplication sharedApplication]scheduleLocalNotification:notification];
+}
+
+-(void)setNotifications{
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    NSArray *bodies1 = [NSArray arrayWithObjects:[NSString stringWithFormat:@"Don't forget today's Migraine Monitor! You have finished %@ tests in total.", _totalTestField.text],[NSString stringWithFormat:@"Don't forget today's Migraine Monitor! You have participated in this test for %@ days.", _totalDaysField.text],[NSString stringWithFormat:@"Don't forget today's Migraine Monitor! You have kept it for %@ days in row.", _daysInRowField.text],@"Migraine Monitor is waiting for your daily test. Do it now!", @"One thing you might want to experiment with now is having a Migraine test.",[NSString stringWithFormat:@"Would you like to do a Migraine test now? You are up to %@ days in a row!", _totalDaysField.text],@"It seems like you didn’t have a chance to do your daily test. No worries! Open Migraine Monitor and keep testing now.", nil];
+    
+    for (int i = 1; i <= [bodies1 count]; i++) {
+        [self addNotificationWithDay:i andBody:[bodies1 objectAtIndex:i-1]];
+    }
+    
+    NSArray *bodies2 = [NSArray arrayWithObjects:@"Do you still remember Migraine Monitor? Have a test today!",[NSString stringWithFormat:@"You have participated in this test for %@ days. Don't give up!", _totalDaysField.text], @"Do you still have migraine? Don't forget to do a test in Migraine Monitor!", @"Migraine Monitor is waiting for you to come back.", @"Thanks for joining Migraine Monitor. It's time to come back!", @"It seems like you have ignored me for several days. Would you like to come back and have a test today?", nil];
+    
+    for (int i = (int)([bodies1 count]) + 1; i < 31; i++) {
+        int index = arc4random() % [bodies2 count];
+        [self addNotificationWithDay:i andBody:[bodies2 objectAtIndex:index]];
+    }
+    //[[NSUserDefaults standardUserDefaults] setObject:@"SET" forKey:@"Notification"];
+    //[[NSUserDefaults standardUserDefaults] synchronize];
+}
+/*
+- (IBAction)doneAction:(id)sender {
+    //NSLog(@"Close Congratulations.");
     [self dismissViewControllerAnimated:YES completion:^
      {
      }];
 }
+*/
 
+-(IBAction)doneAction:(UIButton *)sender{
+    //NSLog(@"Close Congratulations.");
+    [self dismissViewControllerAnimated:YES completion:^
+     {
+     }];
+}
 
 @end

@@ -7,6 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#import "MagicalRecord.h"
+#import "DatabaseManager.h"
+#import "DLSettings.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +20,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [DLSettings sharedSettings].databaseManagerClass = [DatabaseManager class];
+    [MagicalRecord setShouldDeleteStoreOnModelMismatch:YES];
+    
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     return YES;
 }
 

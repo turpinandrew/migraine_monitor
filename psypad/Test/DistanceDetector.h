@@ -13,13 +13,13 @@
 @class TestViewController;
 
 @interface DistanceDetector : NSObject
-
+/*
 @property (strong, nonatomic) AVCaptureSession *session;
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
 @property (strong, nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (strong, nonatomic) AVCaptureConnection *videoConnection;
 @property (strong, nonatomic) UIImage *photo;
-
+*/
 - (void)takePhoto:(TestViewController *)delegate question:(int)question;
 
 - (void)done;

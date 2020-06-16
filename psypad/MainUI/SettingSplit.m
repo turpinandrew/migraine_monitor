@@ -7,8 +7,11 @@
 //
 
 #import "SettingSplit.h"
+#import "SettingRoot.h"
+#import "SettingContent.h"
+#import "SettingListCtrlDelegate.h"
 
-@interface SettingSplit ()
+@interface SettingSplit () <SettingListCtrlDelegate>
 
 @end
 
@@ -16,7 +19,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    UINavigationController *settingNav = [self.childViewControllers firstObject];
+    SettingRoot * settingRootCtrl = [settingNav.childViewControllers firstObject];
+    settingRootCtrl.delegate = self;
+    settingRootCtrl.parentVC = _parentVC;
+    
+    UINavigationController *contentNav = [self.childViewControllers lastObject];
+    SettingContent<UISplitViewControllerDelegate> *settingContentCtrl = [contentNav.childViewControllers firstObject];
+    self.delegate = settingContentCtrl;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -24,14 +34,20 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)settingListController:(SettingRoot *)ctrl didSelectedSetting:(NSString *)setting{
+    UINavigationController *contentNav = [self.childViewControllers lastObject];
+    
+    SettingContent *settingContentCtrl = [contentNav.childViewControllers firstObject];
+    settingContentCtrl.firstPageVC = _firstPageVC;
+    settingContentCtrl.settingString = setting;
+    [settingContentCtrl reloadData];
+    [contentNav popToRootViewControllerAnimated:YES];
+    
+    //SettingContent *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"SettingContent"];
+    //vc.settingString = setting;
+    //[contentNav pushViewController:vc animated:YES];
+    
+    
 }
-*/
 
 @end

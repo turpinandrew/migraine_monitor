@@ -11,9 +11,9 @@
 
 @implementation DatabaseManager
 
-+ (NSString *)modelFileName        { return @"Model.momd"; }
++ (NSString *)modelFileName        { return @"Model1.momd"; }
 + (NSString *)storeFileName        { return @"Database.sqlite"; }
-+ (NSArray *)modelNames            { return @[@"Model1", @"Model2", @"Model3", @"Model4"]; }
++ (NSArray *)modelNames            { return @[@"Model1"]; }
 + (NSString *)iCloudContainer      { return nil; }
 + (NSString *)iCloudContentNameKey { return nil; }
 

@@ -14,6 +14,7 @@
 
 @interface TestViewController : UIViewController
 
+@property (nonatomic, assign) CGFloat currentScreenBrigtness;
 @property (nonatomic, strong) AVAudioPlayer *correctAudioPlayer,
                                             *incorrectAudioPlayer,
                                             *onAudioPlayer,
@@ -45,7 +46,7 @@
 
 @property (strong, nonatomic) NSDate *timer;
 
-@property (strong, nonatomic) DistanceDetector *distanceDetector;
+//@property (strong, nonatomic) DistanceDetector *distanceDetector;
 
 @property (strong, nonatomic) NSMutableArray *staircases;
 @property (weak, nonatomic) Staircase *currentStaircase;
@@ -57,8 +58,11 @@
 @property (nonatomic) int secondaryPressedIndex;
 @property (nonatomic) int ignoredCount;
 
+@property (nonatomic, assign) BOOL realTest;
+
 - (IBAction)beginConfiguration;
 - (IBAction)pressExitButton:(id)sender;
 
-- (void)distanceDetectionPerformed:(NSString *)string;
+//- (void)distanceDetectionPerformed:(NSString *)string;
+
 @end
