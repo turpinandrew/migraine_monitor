@@ -10,7 +10,7 @@
 #import "DLUserAccount.h"
 
 @class AFHTTPRequestOperation;
-@class AFHTTPRequestOperationManager;
+@class AFHTTPSessionManager;
 
 ///  
 ///  Singleton that interacts with an online API
@@ -39,14 +39,14 @@
 ///  
 - (void)didLogout;
 
-- (void)loginWithEmail:(NSString *)email password:(NSString *)password success:(void (^)())success failure:(void (^)(NSString *))failure;
-- (void)signUpWithEmail:(NSString *)email password:(NSString *)password info:(NSDictionary *)info success:(void (^)())success failure:(void (^)(NSString *))failure;
+- (void)loginWithEmail:(NSString *)email password:(NSString *)password success:(void (^)(void))success failure:(void (^)(NSString *))failure;
+- (void)signUpWithEmail:(NSString *)email password:(NSString *)password info:(NSDictionary *)info success:(void (^)(void))success failure:(void (^)(NSString *))failure;
 - (void)logout;
 
 ///  
 ///  Used for subclassing:
 ///  
-@property (nonatomic, strong) AFHTTPRequestOperationManager *requestManager;
-- (void(^)(AFHTTPRequestOperation *operation, NSError *error))failureBlock:(void (^)(NSString *))failure;
+@property (nonatomic, strong) AFHTTPSessionManager *requestManager;
+- (void(^)(NSURLSessionDataTask *operation, NSError *error))failureBlock:(void (^)(NSString *))failure;
 
 @end

@@ -1162,7 +1162,7 @@
 
     if (self.currentConfiguration.use_staircase_methodValue)
     {
-        bool answerCorrect = NO;
+        //bool answerCorrect = NO;
         self.currentStaircase.numTimesIncorrect++;
         self.currentStaircase.numTimesCorrect = 0;
 

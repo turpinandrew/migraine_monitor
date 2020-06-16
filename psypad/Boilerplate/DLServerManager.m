@@ -55,9 +55,9 @@
     self.requestManager = [self managerWithBaseURL:baseURL];
 }
 
-- (AFHTTPRequestOperationManager *)managerWithBaseURL:(NSString *)baseURL
+- (AFHTTPSessionManager *)managerWithBaseURL:(NSString *)baseURL
 {
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:baseURL]];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:baseURL]];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
@@ -67,45 +67,22 @@
     return manager;
 }
 
-- (void(^)(AFHTTPRequestOperation *operation, NSError *error))failureBlock:(void (^)(NSString *))failure
+- (void(^)(NSURLSessionDataTask *operation, NSError *error))failureBlock:(void (^)(NSString *))failure
 {
-    return ^(AFHTTPRequestOperation *operation, NSError *error)
+    return ^(NSURLSessionDataTask *operation, NSError *error)
     {
-        NSDictionary *response = operation.responseObject;
+        NSString* response = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
+
         //NSLog(@"%@",response);
-        if ([response isKindOfClass:[NSDictionary class]])
-        {
-            
-            
-            if ([response[@"error"] isKindOfClass:[NSString class]])
-            {
-                failure(response[@"error"]);
-            }
-            else if ([response[@"errors"] isKindOfClass:[NSDictionary class]])
-            {
-                NSDictionary *errors = response[@"errors"];
-                
-                NSMutableArray *combinedErrors = @[].mutableCopy;
-                [errors enumerateKeysAndObjectsUsingBlock:^(NSString *field, NSString *error, BOOL *stop)
-                {
-                    [combinedErrors addObject:[NSString stringWithFormat:@"%@ %@", field, error]];
-                }];
-                
-                failure([combinedErrors componentsJoinedByString:@", "]);
-            }
-        }
-        else
-        {
-            failure(error.localizedDescription);
-        }
+        failure(response);
     };
 }
 
-- (void)loginWithEmail:(NSString *)email password:(NSString *)password success:(void (^)())success failure:(void (^)(NSString *))failure
+- (void)loginWithEmail:(NSString *)email password:(NSString *)password success:(void (^)(void))success failure:(void (^)(NSString *))failure
 {
     assert(self.requestManager);
     
-    void (^successBlock)(AFHTTPRequestOperation *, NSDictionary *) = ^(AFHTTPRequestOperation *operation, NSDictionary *response)
+    void (^successBlock)(NSURLSessionDataTask *, NSDictionary *) = ^(NSURLSessionDataTask *operation, NSDictionary *response)
     {
         if ([response isKindOfClass:[NSDictionary class]])
         {
@@ -127,15 +104,17 @@
     
     [self.requestManager POST:@"api/users/sign_in"
                    parameters:@{ @"user": @{ @"email" : email, @"password" : password } }
+                      headers:nil
+                     progress:nil
                       success:successBlock
                      failure:[self failureBlock:failure]];
 }
 
-- (void)signUpWithEmail:(NSString *)email password:(NSString *)password info:(NSDictionary *)info success:(void (^)())success failure:(void (^)(NSString *))failure
+- (void)signUpWithEmail:(NSString *)email password:(NSString *)password info:(NSDictionary *)info success:(void (^)(void))success failure:(void (^)(NSString *))failure
 {
     assert(self.requestManager);
     
-    void (^successBlock)(AFHTTPRequestOperation *, NSDictionary *) = ^(AFHTTPRequestOperation *operation, NSDictionary *response)
+    void (^successBlock)(NSURLSessionDataTask *, NSDictionary *) = ^(NSURLSessionDataTask *operation, NSDictionary *response)
     {
         if ([response isKindOfClass:[NSDictionary class]])
         {
@@ -162,6 +141,8 @@
     
     [self.requestManager POST:@"api/users"
                    parameters:@{ @"user": data }
+                      headers:nil
+                     progress:nil
                       success:successBlock
                       failure:[self failureBlock:failure]];
 }
@@ -175,6 +156,7 @@
         [self.requestManager DELETE:@"api/users/sign_out"
                        parameters:@{ @"user_email": self.currentUser.email,
                                      @"user_token": self.currentUser.authToken }
+                            headers:nil
                             success:nil
                             failure:nil];
         

@@ -112,7 +112,7 @@
     button_animation.removedOnCompletion = NO;
     button_animation.fillMode = kCAFillModeForwards;
     [_doneButton.layer addAnimation:button_animation forKey:@"button"];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(setButtonOpacity) userInfo:nil repeats:NO];
+    //NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(setButtonOpacity) userInfo:nil repeats:NO];
     [_doneButton becomeFirstResponder];
     
     //Notifications

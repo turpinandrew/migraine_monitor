@@ -90,15 +90,10 @@
             completeURL = [completeURL stringByAppendingFormat:@"%@=%@&", key, value];
         }];
         
+            // get from here
         completeURL = [completeURL stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"&"]];
         
-        NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] init];
-        [_request setURL:[NSURL URLWithString:completeURL]];
-        
-        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:_request];
-
-        operation.responseSerializer = [AFHTTPResponseSerializer serializer];
-
+            // put here
         NSURL *documentsDirectory = [NSURL documentsDirectory];
         NSString *templateString = [NSString stringWithFormat:@"%@/XXXXXX", [documentsDirectory path]];
 
@@ -109,7 +104,40 @@
         NSURL *newURL = [NSURL fileURLWithPath:[[NSString stringWithCString:filename encoding:NSASCIIStringEncoding] stringByAppendingString:@".set"]];
 
         [[NSFileManager defaultManager] createFileAtPath:newURL.path contents:nil attributes:nil];
+        
+            // ok, go AHT - need to check this carefully
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        [manager GET:completeURL
+            parameters:nil
+            headers:nil
+            progress:nil
+            success:^(NSURLSessionTask *task, id responseObject) {
+                progress(@"Installing sequence...", 1);
+                dispatch_semaphore_t sequence_sema = dispatch_semaphore_create(0);
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                {
+                    [self installSequence:[NSURL fileURLWithPath:newURL.path] name:@"sequence" data:data MOC:MOC];
+                    dispatch_semaphore_signal(sequence_sema);
+                });
+                dispatch_semaphore_wait(sequence_sema, DISPATCH_TIME_FOREVER);
+                self.sequence.url = url;
+                
+                //[MOC MR_saveToPersistentStoreAndWait];
 
+                dispatch_semaphore_signal(sema);
+            }
+            failure:^(NSURLSessionTask *operation, NSError *error) {
+                NSLog(@"Error: %@", error);
+                dispatch_semaphore_signal(sema);
+
+               [[[UIAlertView alloc] initWithTitle:@"Download Error"
+                                           message:[NSString stringWithFormat:@"%@", error.description]
+                                          delegate:nil
+                                 cancelButtonTitle:@"Close"
+                                 otherButtonTitles:nil] show];
+            }];
+        
+        /*
         operation.outputStream = [NSOutputStream outputStreamToFileAtPath:newURL.path append:NO];
 
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *_operation, id responseObject)
@@ -142,6 +170,7 @@
         }];
 
         [operation start];
+         */
     }
 }
 

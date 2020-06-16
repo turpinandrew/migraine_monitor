@@ -34,7 +34,7 @@
                         failure:(void (^)(NSString *error))failure;
 
 - (void)uploadLogsWithProgress:(void (^)(NSString *status, float progress))progress
-                       success:(void (^)())success
+                       success:(void (^)(void))success
                        failure:(void (^)(NSString *error))failure;
 
 @end
