@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment version="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Launch View Controller-->
+        <scene sceneID="FrR-6E-wg4">
+            <objects>
+                <viewController id="UKi-kf-B2P" customClass="LaunchViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wUW-y5-XdK"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ha8-92-hKu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PtR-VF-SuN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arc_logo" translatesAutoresizingMaskIntoConstraints="NO" id="Bfa-NW-Rwk">
+                                <rect key="frame" x="25" y="586" width="184" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="MO3-J9-gIn"/>
+                                    <constraint firstAttribute="width" constant="184" id="qE5-cB-VRW"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unimelb_logo" translatesAutoresizingMaskIntoConstraints="NO" id="nis-G3-LtE">
+                                <rect key="frame" x="218" y="586" width="184" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="184" id="97K-di-SDO"/>
+                                    <constraint firstAttribute="height" constant="56" id="YrD-mn-h6x"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PsyPad" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rZe-U7-3JJ">
+                                <rect key="frame" x="-16" y="95" width="406" height="103"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="406" id="bWm-Ze-NcT"/>
+                                    <constraint firstAttribute="height" constant="103" id="c9v-76-McI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="85"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jky-ic-6Ye">
+                                <rect key="frame" x="140" y="586" width="210" height="56"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bQh-Tb-e2k">
+                                        <rect key="frame" x="0.0" y="0.0" width="210" height="56"/>
+                                        <state key="normal" title="Visit PsyPad Website">
+                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tappedVisitWebsite:" destination="UKi-kf-B2P" eventType="touchUpInside" id="DZf-RE-VtU"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="bQh-Tb-e2k" firstAttribute="leading" secondItem="jky-ic-6Ye" secondAttribute="leading" id="5vM-in-2SQ"/>
+                                    <constraint firstAttribute="width" constant="210" id="BEW-6O-ciB"/>
+                                    <constraint firstAttribute="bottom" secondItem="bQh-Tb-e2k" secondAttribute="bottom" id="OS6-I3-ITe"/>
+                                    <constraint firstAttribute="trailing" secondItem="bQh-Tb-e2k" secondAttribute="trailing" id="gwm-gK-3mf"/>
+                                    <constraint firstItem="bQh-Tb-e2k" firstAttribute="top" secondItem="jky-ic-6Ye" secondAttribute="top" id="hfI-Ar-VOb"/>
+                                    <constraint firstAttribute="height" constant="56" id="pSE-Pt-Zi5"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="enabling visual psychophysics research" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lZO-s1-j2Y">
+                                <rect key="frame" x="-160" y="206" width="695" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="695" id="KuB-BC-M3o"/>
+                                    <constraint firstAttribute="height" constant="45" id="hid-Up-YCX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="30"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="85K-fG-xUI">
+                                <rect key="frame" x="169" y="381" width="37" height="37"/>
+                                <color key="color" red="0.33333334329999997" green="0.33333334329999997" blue="0.33333334329999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.8862745098" green="0.8862745098" blue="0.8862745098" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Ha8-92-hKu" firstAttribute="top" secondItem="nis-G3-LtE" secondAttribute="bottom" constant="25" id="3re-Xl-P7w"/>
+                            <constraint firstItem="Bfa-NW-Rwk" firstAttribute="leading" secondItem="PtR-VF-SuN" secondAttribute="leading" constant="25" id="4UO-b5-IcP"/>
+                            <constraint firstItem="Ha8-92-hKu" firstAttribute="top" secondItem="jky-ic-6Ye" secondAttribute="bottom" constant="25" id="4bq-4i-sa7"/>
+                            <constraint firstAttribute="centerY" secondItem="85K-fG-xUI" secondAttribute="centerY" constant="-66" id="Cwa-d3-i01"/>
+                            <constraint firstItem="lZO-s1-j2Y" firstAttribute="top" secondItem="rZe-U7-3JJ" secondAttribute="bottom" constant="8" id="KfK-89-ywI"/>
+                            <constraint firstAttribute="centerX" secondItem="rZe-U7-3JJ" secondAttribute="centerX" id="Oaa-Cg-JzN"/>
+                            <constraint firstItem="Ha8-92-hKu" firstAttribute="top" secondItem="Bfa-NW-Rwk" secondAttribute="bottom" constant="25" id="Vyq-hT-Fpv"/>
+                            <constraint firstAttribute="centerX" secondItem="lZO-s1-j2Y" secondAttribute="centerX" id="Y3O-UX-lvD"/>
+                            <constraint firstAttribute="trailing" secondItem="jky-ic-6Ye" secondAttribute="trailing" constant="25" id="aD6-Bb-JnT"/>
+                            <constraint firstItem="rZe-U7-3JJ" firstAttribute="top" secondItem="PtR-VF-SuN" secondAttribute="top" constant="95" id="chi-qC-gG5"/>
+                            <constraint firstItem="nis-G3-LtE" firstAttribute="leading" secondItem="Bfa-NW-Rwk" secondAttribute="trailing" constant="9" id="f7S-aw-SKE"/>
+                            <constraint firstAttribute="centerX" secondItem="85K-fG-xUI" secondAttribute="centerX" id="rCB-wH-cPM"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="rnC-oQ-jI1"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9mG-AS-H8v" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1066.25" y="-13.34"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="arc_logo" width="16" height="16"/>
+        <image name="unimelb_logo" width="16" height="16"/>
+    </resources>
+</document>
