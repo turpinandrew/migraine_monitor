@@ -7,12 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class StartPage;
 
 @interface SettingSplit : UISplitViewController
-
-@property (nonatomic, strong) UIViewController *parentVC;
-@property (nonatomic, strong) StartPage *firstPageVC;
-
 
 @end

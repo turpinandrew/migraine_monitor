@@ -7,8 +7,6 @@
 //
 
 #import "ResultDisplay.h"
-#import "YHBarChart.h"
-#import <QuartzCore/QuartzCore.h>
 
 @interface ResultDisplay ()
 
@@ -18,22 +16,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _barchartView = [[YHBarChart alloc]initWithFrame:self.view.frame];
-    [self.view addSubview:_barchartView];
-    
+    // Do any additional setup after loading the view.
 }
--(void)viewDidAppear:(BOOL)animated{
-    [_barchartView reDraw];
-}
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
 
 /*
 #pragma mark - Navigation

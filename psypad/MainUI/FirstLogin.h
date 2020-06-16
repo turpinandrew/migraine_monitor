@@ -8,10 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class LoginTable;
-
 @interface FirstLogin : UIViewController
-
-@property (nonatomic, strong) LoginTable *table;
 
 @end

@@ -7,11 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class MBProgressHUD;
 
-@interface InitialLoading : UIViewController <UIAlertViewDelegate>
-
-@property (nonatomic, strong) MBProgressHUD *hud;
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@interface InitialLoading : UIViewController
 
 @end

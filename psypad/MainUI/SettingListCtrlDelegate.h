@@ -6,14 +6,8 @@
 //  Copyright © 2018 LiuYuHan. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#ifndef SettingListCtrlDelegate_h
+#define SettingListCtrlDelegate_h
 
-@class SettingRoot;
 
-@protocol SettingListCtrlDelegate <NSObject>
-
-@optional
-
-- (void)settingListController:(SettingRoot *)ctrl didSelectedSetting:(NSString *)setting;
-
-@end
+#endif /* SettingListCtrlDelegate_h */

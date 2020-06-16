@@ -10,10 +10,4 @@
 
 @interface YHBarButtonItem : UIView
 
-@property (nonatomic, strong) UIColor *fillColor;
-
-@property (nonatomic, strong) NSString *text;
-
--(void)addText:(NSString *)text WithColor:(UIColor *)color;
-
 @end

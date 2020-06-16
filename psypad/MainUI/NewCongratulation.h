@@ -10,11 +10,4 @@
 
 @interface NewCongratulation : UIViewController
 
-@property (strong, nonatomic) UILabel *thanksLabel;
-@property (strong, nonatomic) UILabel *completeLabel1;
-@property (strong, nonatomic) UILabel *completeLabel2;
-
-@property (nonatomic, strong) UIImageView * background;
-@property (nonatomic, strong) CALayer *mainLayer;
-
 @end
