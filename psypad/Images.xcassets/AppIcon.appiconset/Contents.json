@@ -1,68 +1,61 @@
 {
   "images" : [
     {
-      "filename" : "mm_icon_20.png",
       "idiom" : "ipad",
-      "scale" : "1x",
-      "size" : "20x20"
+      "size" : "20x20",
+      "scale" : "1x"
     },
     {
-      "filename" : "mm_icon_40.png",
       "idiom" : "ipad",
-      "scale" : "2x",
-      "size" : "20x20"
+      "size" : "20x20",
+      "scale" : "2x"
     },
     {
-      "filename" : "mm_icon_29.png",
       "idiom" : "ipad",
-      "scale" : "1x",
-      "size" : "29x29"
+      "size" : "29x29",
+      "scale" : "1x"
     },
     {
-      "filename" : "mm_icon_58-1.png",
       "idiom" : "ipad",
-      "scale" : "2x",
-      "size" : "29x29"
+      "size" : "29x29",
+      "scale" : "2x"
     },
     {
-      "filename" : "mm_icon_40-1.png",
       "idiom" : "ipad",
-      "scale" : "1x",
-      "size" : "40x40"
+      "size" : "40x40",
+      "scale" : "1x"
     },
     {
-      "filename" : "mm_icon_80-1.png",
       "idiom" : "ipad",
-      "scale" : "2x",
-      "size" : "40x40"
+      "size" : "40x40",
+      "scale" : "2x"
     },
     {
-      "filename" : "mm_icon_76.png",
+      "size" : "76x76",
       "idiom" : "ipad",
-      "scale" : "1x",
-      "size" : "76x76"
+      "filename" : "grating-ios7.png",
+      "scale" : "1x"
     },
     {
-      "filename" : "mm_icon_152.png",
+      "size" : "76x76",
       "idiom" : "ipad",
-      "scale" : "2x",
-      "size" : "76x76"
+      "filename" : "grating-ios7@2x.png",
+      "scale" : "2x"
     },
     {
-      "filename" : "mm_icon_167.png",
+      "size" : "83.5x83.5",
       "idiom" : "ipad",
-      "scale" : "2x",
-      "size" : "83.5x83.5"
+      "filename" : "grating-iPadPro@2x.png",
+      "scale" : "2x"
     },
     {
-      "filename" : "mm_icon.png",
       "idiom" : "ios-marketing",
-      "scale" : "1x",
-      "size" : "1024x1024"
+      "size" : "1024x1024",
+      "scale" : "1x"
     }
   ],
   "info" : {
-    "author" : "xcode",
-    "version" : 1
+    "version" : 1,
+    "author" : "xcode"
   }
 }
