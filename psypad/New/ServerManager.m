@@ -24,7 +24,10 @@
     {
         self.baseURL = [RootEntity rootEntity].server_url;
     }
-    
+        
+    self.requestManager.responseSerializer.acceptableContentTypes=[NSSet setWithObjects:@"application/octet-stream",@"application/json",nil];
+    //self.requestManager.responseSerializer.acceptableContentTypes = [self.requestManager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+
     return self;
 }
 
@@ -130,14 +133,14 @@
         
         [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext)
          {
-             [TestConfiguration MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"server_id == %@", configID] inContext:localContext];
-             
+            [TestConfiguration MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"server_id == %@", configID] inContext:localContext];
+
              newConfiguration = [TestConfiguration MR_createEntityInContext:localContext];
              
              [newConfiguration loadData:response];
              newConfiguration.server_url = url;
              newConfiguration.server_id = configID;
-             
+
              if ([response objectForKey:@"image_set_url"])
              {
                  NSString *image_sequence_url = [[RootEntity rootEntity].server_url stringByAppendingPathComponent:response[@"image_set_url"]];

@@ -105,8 +105,11 @@
 
         [[NSFileManager defaultManager] createFileAtPath:newURL.path contents:nil attributes:nil];
         
-            // ok, go AHT - need to check this carefully
+            // ok, go
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        [manager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
+        manager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"application/octet-stream"];
+        NSLog(@"Completeurl: %@",completeURL);
         [manager GET:completeURL
             parameters:nil
             headers:nil
@@ -127,7 +130,7 @@
                 dispatch_semaphore_signal(sema);
             }
             failure:^(NSURLSessionTask *operation, NSError *error) {
-                NSLog(@"Error: %@", error);
+                NSLog(@"XX Error: %@", error);
                 dispatch_semaphore_signal(sema);
 
                [[[UIAlertView alloc] initWithTitle:@"Download Error"

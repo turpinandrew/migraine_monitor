@@ -73,7 +73,9 @@
     {
         NSString* response = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
 
-        //NSLog(@"%@",response);
+        NSLog(@"FAILURE BLOCK");
+        //NSLog(@"%@",operation);
+        //NSLog(@"%@",error);
         failure(response);
     };
 }
