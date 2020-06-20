@@ -124,10 +124,12 @@
     [[UIScreen mainScreen] setBrightness:_currentScreenBrigtness];
 }
 
+/* deprecated
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     return UIDeviceOrientationIsLandscape(toInterfaceOrientation);
 }
+*/
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
@@ -255,8 +257,8 @@
     self.backgroundImageView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     self.backgroundImageView.image = bgImage;
     self.backgroundImageView.contentMode = UIViewContentModeScaleToFill;
-    //NSLog(@"BackGround Image Actual: X: %f, Y: %f, W: %f, H:%f", _backgroundImageView.frame.origin.x, _backgroundImageView.frame.origin.y, bgImage.size.width, bgImage.size.height);
-    //NSLog(@"BackGround Image Should Be: X: %f, Y: %f, W: %f, H:%f", _backgroundImageView.frame.origin.x, _backgroundImageView.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+    NSLog(@"BackGround Image Actual: X: %f, Y: %f, W: %f, H:%f", _backgroundImageView.frame.origin.x, _backgroundImageView.frame.origin.y, bgImage.size.width, bgImage.size.height);
+    NSLog(@"BackGround Image Should Be: X: %f, Y: %f, W: %f, H:%f", _backgroundImageView.frame.origin.x, _backgroundImageView.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
     
     self.ignoredCount = 0;
 
@@ -343,7 +345,7 @@
 - (void)logConfiguration
 {
     NSDictionary *data = self.currentConfiguration.serialise;
-    NSData *jsonified = [NSJSONSerialization dataWithJSONObject:data options:nil error:nil];
+    NSData *jsonified = [NSJSONSerialization dataWithJSONObject:data options:kNilOptions error:nil];
     NSString *string = [[NSString alloc] initWithData:jsonified encoding:NSUTF8StringEncoding];
     [self log:@"test_begin" info:string];
 }
@@ -1285,7 +1287,7 @@
 }
 
 #pragma mark - Cleanup
-
+/* deprecated
 - (void)viewDidUnload
 {
     free(self.seedState);
@@ -1294,6 +1296,7 @@
 
     [super viewDidUnload];
 }
+ */
 /*
 - (void)distanceDetectionPerformed:(NSString *)string
 {

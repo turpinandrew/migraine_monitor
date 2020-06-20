@@ -57,6 +57,7 @@
                           sema:(dispatch_semaphore_t)sema
                            MOC:(NSManagedObjectContext *)MOC;
 {
+    NSLog(@"Installing seqeunce %@",url);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"TestSequence"];
     request.predicate = [NSPredicate predicateWithFormat:@"(url = %@)", url];
 
@@ -103,7 +104,6 @@
 
         NSURL *newURL = [NSURL fileURLWithPath:[[NSString stringWithCString:filename encoding:NSASCIIStringEncoding] stringByAppendingString:@".set"]];
 
-        [[NSFileManager defaultManager] createFileAtPath:newURL.path contents:nil attributes:nil];
         
             // ok, go
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -126,11 +126,12 @@
                 self.sequence.url = url;
                 
                 //[MOC MR_saveToPersistentStoreAndWait];
+                [[NSFileManager defaultManager] createFileAtPath:newURL.path contents:responseObject attributes:nil];
 
                 dispatch_semaphore_signal(sema);
             }
             failure:^(NSURLSessionTask *operation, NSError *error) {
-                NSLog(@"XX Error: %@", error);
+                NSLog(@"Error: %@", error);
                 dispatch_semaphore_signal(sema);
 
                [[[UIAlertView alloc] initWithTitle:@"Download Error"
@@ -390,7 +391,7 @@
                 TestSequenceImage *createdImage = [TestSequenceImage MR_createEntityInContext:MOC];
                 createdImage.name = imageName;
                 createdImage.is_animated = @YES;
-                createdImage.animated_images = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:frames options:nil error:nil] encoding:NSUTF8StringEncoding];
+                createdImage.animated_images = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:frames options:kNilOptions error:nil] encoding:NSUTF8StringEncoding];
 
                 [createdImages addObject:createdImage];
             }
@@ -453,7 +454,7 @@
     if (self.sequence)
     {
         [self.sequence MR_deleteEntity];
-        self.sequence = nil;
+        //self.sequence = nil;
     }
 
     self.sequence = newSequence;

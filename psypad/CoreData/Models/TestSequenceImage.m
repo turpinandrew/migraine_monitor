@@ -57,7 +57,7 @@
     }
     else
     {
-        NSArray *animImages = [NSJSONSerialization JSONObjectWithData:[self.animated_images dataUsingEncoding:NSUTF8StringEncoding] options:nil error:nil];
+        NSArray *animImages = [NSJSONSerialization JSONObjectWithData:[self.animated_images dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
 
         for (NSDictionary *animImage in [animImages sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *a, NSDictionary *b) {
             return [a[@"n"] compare:b[@"n"]];
@@ -106,7 +106,7 @@
 {
     NSMutableArray *allImages = [NSMutableArray array];
 
-    NSArray *animImages = [NSJSONSerialization JSONObjectWithData:[self.animated_images dataUsingEncoding:NSUTF8StringEncoding] options:nil error:nil];
+    NSArray *animImages = [NSJSONSerialization JSONObjectWithData:[self.animated_images dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
 
     for (NSDictionary *animImage in [animImages sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *a, NSDictionary *b) {
         return [a[@"n"] compare:b[@"n"]];

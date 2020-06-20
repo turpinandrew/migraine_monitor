@@ -38,7 +38,7 @@
 //#define SHAREDPORT 8000
 #define SHAREDPORT 3000
 
-
+#define PSYPAD_SERVER @"https://server.psypad.net.au/"
 
 
 #import <UIKit/UIKit.h>

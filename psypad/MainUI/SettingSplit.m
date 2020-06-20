@@ -22,7 +22,7 @@
     UINavigationController *settingNav = [self.childViewControllers firstObject];
     SettingRoot * settingRootCtrl = [settingNav.childViewControllers firstObject];
     settingRootCtrl.delegate = self;
-    settingRootCtrl.parentVC = _parentVC;
+    settingRootCtrl.parentVC = [[UINavigationController alloc] initWithRootViewController: _parentVC];
     
     UINavigationController *contentNav = [self.childViewControllers lastObject];
     SettingContent<UISplitViewControllerDelegate> *settingContentCtrl = [contentNav.childViewControllers firstObject];

@@ -1,5 +1,6 @@
 #import "TestSequence.h"
 #import "NSURL+CommonURLs.h"
+#import "NSData+ReadPartialFIle.h"
 #import "TestSequenceImage.h"
 #import "TestSequenceFolder.h"
 #import "DatabaseManager.h"
@@ -80,7 +81,8 @@
 
 - (NSData *)mappedDataWithStart:(long)start length:(size_t)length description:(NSString *)description
 {
-    FILE *file;
+    /*
+     FILE *file;
     
     file = fopen([self.absolutePath cStringUsingEncoding:NSASCIIStringEncoding], "rb");
     
@@ -96,19 +98,28 @@
         return nil;
     }
     
-    int fd = fileno(file);
-    
     long page_start = start - (start % getpagesize());
     long offset = start - page_start;
     
+    NSLog(@"%@",description);
+    int fd = fileno(file);
+    
     void *data = mmap(NULL, offset + length, PROT_READ, MAP_SHARED, fd, page_start);
+    if( data == MAP_FAILED ) {
+        NSLog(@"mmap failed");
+    }
     
     NSData *nsData = [NSData dataWithBytes:data + offset length:length];
     
     munmap(data, length);
     
     fclose(file);
+    */
     
+    NSString *filename = [NSString stringWithUTF8String:[self.absolutePath cStringUsingEncoding:NSASCIIStringEncoding]];
+    NSLog(@"Reading filename: %@",filename);
+    NSData *nsData = [NSData dataWithContentsOfFile:filename atOffset:start withSize:length];
+
     return nsData;
 }
 
@@ -118,11 +129,20 @@
 
     NSData *image_data = [self mappedDataWithStart:self.background_start.longValue length:self.background_length.intValue description:@"image set while loading background image"];
 
-    if([[UIScreen mainScreen] scale] == 2.0 && [UIImage respondsToSelector:@selector(imageWithData:scale:)])
-        return [UIImage imageWithData:image_data scale:2];
-    else
-        return [UIImage imageWithData:image_data];
+    //NSLog(@"background starts at : %ld",self.background_start.longValue);
+    //NSLog(@"background length at : %d",self.background_length.intValue);
+    //NSLog(@"got background image: %lu",(unsigned long)image_data.length);
+    //for (int i=0;i<8;i++)
+    //    NSLog(@"%d",((int *)image_data.bytes)[i]);
 
+    UIImage *ui_image;
+    if([[UIScreen mainScreen] scale] == 2.0 && [UIImage respondsToSelector:@selector(imageWithData:scale:)])
+        ui_image = [UIImage imageWithData:image_data scale:2];
+    else {
+        ui_image = [UIImage imageWithData:image_data];
+    }
+    NSLog(@"im: %f %f",ui_image.size.width, ui_image.size.height);
+    return ui_image;
 }
 
 - (UIImage *)titleImage

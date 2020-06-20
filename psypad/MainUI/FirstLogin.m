@@ -193,7 +193,7 @@
         [self showSingleButtonAlertWithTitle:@"Empty Field" andContent:@"Please input your password and try again." andButton:@"Try Again" withStyle:NSTextAlignmentCenter];
     }
     else{
-        [RootEntity rootEntity].server_url = @"https://server.psypad.net.au/";
+        [RootEntity rootEntity].server_url = PSYPAD_SERVER;
         [DatabaseManager save];
         //Authenrize
         if ([self validUserIDforLogin:userID]) {
@@ -262,7 +262,7 @@
     NSString *userID = _table.idField.text;
     NSString *password =_table.urlField.text;
     if(password.length > 0){
-        [RootEntity rootEntity].server_url = @"https://server.psypad.net.au/";
+        [RootEntity rootEntity].server_url = PSYPAD_SERVER;
         [DatabaseManager save];
         if (userID.length > 0) {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Input Password Again" message:@"Please input your password again." preferredStyle:UIAlertControllerStyleAlert];
