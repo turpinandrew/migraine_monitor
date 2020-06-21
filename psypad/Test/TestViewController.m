@@ -247,6 +247,8 @@
 
     self.configurationNameLabel.hidden = YES;
     self.beginConfigurationButton.hidden = YES;
+    
+    self.modalPresentationStyle = UIModalPresentationFullScreen;
     self.view.backgroundColor = [UIColor colorWithHexString:self.currentConfiguration.background_colour];
     UIImage *bgImage = self.currentConfiguration.sequence.backgroundImage;
     //self.backgroundImageView.image = bgImage;

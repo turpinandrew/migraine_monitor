@@ -54,13 +54,15 @@
     {
         TestViewController *controller = segue.destinationViewController;
         controller.realTest = self.realTest;
-        controller.configurations = @[sender];
+        controller.configurations = @[sender];        
+        controller.modalPresentationStyle = UIModalPresentationFullScreen;
     }
     else if ([segue.identifier isEqualToString:@"Finish&Congratulation"]) {
         Congratulations *controller = segue.destinationViewController;
         controller.log = sender;
         controller.migraine = _migraine;
         controller.realTest = _realTest;
+        controller.modalPresentationStyle = UIModalPresentationFullScreen;
     }
 }
 

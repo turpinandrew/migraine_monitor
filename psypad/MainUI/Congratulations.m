@@ -102,8 +102,10 @@
     
     
     //Done Button
+    _doneButton.layer.opacity = 1.0f;
+
     //[_doneButton addTarget:self action:@selector(doneAction:) forControlEvents:UIControlEventAllEvents];
-    _doneButton.layer.opacity = 0.0f;
+    /*_doneButton.layer.opacity = 0.0f;
     CABasicAnimation *button_animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
     button_animation.beginTime = CACurrentMediaTime()+3.5f;
     button_animation.duration = 1.5f;
@@ -112,8 +114,12 @@
     button_animation.removedOnCompletion = NO;
     button_animation.fillMode = kCAFillModeForwards;
     [_doneButton.layer addAnimation:button_animation forKey:@"button"];
-    //NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(setButtonOpacity) userInfo:nil repeats:NO];
+     */
     [_doneButton becomeFirstResponder];
+
+    //[_doneButton performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0]; // aht no work
+    //_doneButton.imageView.userInteractionEnabled = YES;// aht no work
+
     
     //Notifications
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Notification"]) {
@@ -124,10 +130,6 @@
     }else{
         [self setNotifications];
     }
-}
-
--(void)setButtonOpacity{
-    _doneButton.layer.opacity = 1.0f;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -454,7 +456,7 @@
 */
 
 -(IBAction)doneAction:(UIButton *)sender{
-    //NSLog(@"Close Congratulations.");
+    NSLog(@"Close Congratulations.");
     [self dismissViewControllerAnimated:YES completion:^
      {
      }];
