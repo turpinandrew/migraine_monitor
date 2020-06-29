@@ -20,9 +20,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     UINavigationController *settingNav = [self.childViewControllers firstObject];
-    SettingRoot * settingRootCtrl = [settingNav.childViewControllers firstObject];
+    SettingRoot *settingRootCtrl = [settingNav.childViewControllers firstObject];
     settingRootCtrl.delegate = self;
-    settingRootCtrl.parentVC = [[UINavigationController alloc] initWithRootViewController: _parentVC];
+    settingRootCtrl.parentVC = _parentVC; //[[UINavigationController alloc] initWithRootViewController: _parentVC];
     
     UINavigationController *contentNav = [self.childViewControllers lastObject];
     SettingContent<UISplitViewControllerDelegate> *settingContentCtrl = [contentNav.childViewControllers firstObject];

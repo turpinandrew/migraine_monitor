@@ -187,7 +187,7 @@
                                             <fragment content="This App was Created by Researchers at The University of Melbourne with NHMRC Funding. Click for Detailed Information.">
                                                 <attributes>
                                                     <color key="NSColor" red="0.090196078431372548" green="0.21568627450980393" blue="0.37254901960784315" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <font key="NSFont" metaFont="menu" size="11"/>
+                                                    <font key="NSFont" metaFont="message" size="11"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                 </attributes>
                                             </fragment>
@@ -634,6 +634,9 @@
                                     <color key="titleColor" red="0.1215686275" green="0.27450980390000002" blue="0.4549019608" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="configurationButton:" destination="erA-5H-nTk" eventType="touchUpInside" id="rZ2-t3-hnQ"/>
+                                </connections>
                             </button>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Migraine Monitor" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s4i-M4-BGC">
                                 <rect key="frame" x="266" y="107" width="548" height="103"/>
@@ -1275,7 +1278,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="u5T-Dp-UeV"/>
+        <segue reference="uf0-Rp-Q9O"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arc_logo" width="183.5" height="56"/>
